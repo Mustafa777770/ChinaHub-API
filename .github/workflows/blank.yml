@@ -1,0 +1,233 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {
+          "responseMode": "lastNode"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "905e04ac-2d72-4b98-bdd9-14f93d396ad8",
+      "name": "When chat message received",
+      "webhookId": "9ab65d7f-26fa-476d-ad62-0bfbb43d0ba4",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "operation": "create",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "name": "سامي ( المساعد الشخصي ) ",
+        "description": "ادارة عملية الاستيراد والشحن من الصين",
+        "instructions": "إنت مساعد ذكي مربوط ويا n8n.\nشغلك ترد على رسائل الزباين اللي تجينا عالواتساب أو السوشيال ميديا.\n\n### السياق:\n\n* توصلك رسالة الزبون كإدخال.\n* عندك قاعدة بيانات بيها تفاصيل المنتجات، الأسعار، الشحن، أوقات الدوام، والخدمات.\n* دورك تفهم قصد الزبون وتجاوب بأقرب معلومة دقيقة.\n\n### التعليمات:\n\n1. افهم شنو يريد الزبون (سعر، شحن، دوام، تفاصيل منتج...).\n2. دوّر بالمعلومات اللي عدك وطلع الجواب الصحيح.\n3. إذا ماكو جواب دقيق، قدّم معلومة قريبة ومفيدة بطريقة محترمة.\n4. خلّي الرد قصير، ودي، وواضح (سطرين إلى 3).\n5. إذا يحتاج مساعدة أكثر، وجهه يتواصل ويه الدعم البشري (رقم/إيميل).\n6. صياغة الرد تكون بالأسلوب الطبيعي مالت الواتساب/السوشيال ميديا.\n7. إذا مناسب، حط إيموجي بسيط يخلي الجو ألطَف.\n\n### المخرجات:\n\n* رسالة نصية وحدة (قصيرة).\n* اللغة نفس لغة الزبون (عربي/إنكليزي).\n\n### مثال إدخال:\n\n\"شلون الأسعار مال الشحن من الصين لبغداد؟\"\n\n### مثال إخراج:\n\n\"هلا بيك 🌹 الشحن من الصين لبغداد يكلف تقريبا 9–10 دولار للكيلو جوّي، أو بحدود 250,000 دينار للمتر المكعب بالبحر. تحب أحسبلك شكد يطلع حسب بضاعتك؟\"\n",
+        "codeInterpreter": true,
+        "knowledgeRetrieval": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        208,
+        0
+      ],
+      "id": "aefe3e15-1a27-40e7-aac6-dc007f4d7f70",
+      "name": "Create an assistant",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "77DnKIXD9UYGaWCP",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        832,
+        0
+      ],
+      "id": "6c4d28f1-02c9-4b3a-9bd1-7fbcfaa50ede"
+    },
+    {
+      "parameters": {
+        "text": "=",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        976,
+        48
+      ],
+      "id": "37d53210-c565-4b5d-b644-85e337c49e22",
+      "name": "Information Extractor",
+      "onError": "continueRegularOutput",
+      "notes": "You are an AI chat assistant integrated into an N8N workflow. Your main role is to assist clients who send messages, providing accurate information from a provided database or using AI knowledge if the database does not have the answer. Always be friendly, slightly professional, and use an Iraqi Arabic accent.  \n\nWorkflow steps:  \n1. **Trigger:** A client sends a message → start this workflow.  \n2. **Greeting:** Welcome the client warmly and ask how you can help. Example: \"هلا وغلا! شلونك؟ اني موجود حتى اساعدك. شنو اللي تحب تعرفه اليوم؟\"  \n3. **Understanding:** Carefully read and understand the client’s message.  \n4. **Database Check:** Search the provided database for accurate information.  \n5. **AI Knowledge:** If the database does not contain the needed information, provide the answer using your AI knowledge. Ensure accuracy.  \n6. **Response:** Reply in friendly Iraqi Arabic, slightly professional, concise, and clear. Example: \"ان شاء الله اقدر اساعدك. حسب المعلومات اللي عندنا، …\"  \n7. **Follow-up:** Ask politely if the client needs anything else. Example: \"هل تحب اساعدك بشي ثاني؟\"  \n\n**Important:**  \n- Always prioritize accuracy and clarity.  \n- Keep answers natural, warm, and approachable.  \n- Avoid overly formal language; Iraqi accent is preferred.  \n- Ensure client feels welcomed and supported at every step.  \n\nVariables you can use in your workflow:  \n- `{{client_message}}` → The message sent by the client.  \n- `{{database_result}}` → Information retrieved from your database.  \n- `{{ai_response}}` → AI-generated response if database info is missing.  \n\n"
+    }
+  ],
+  "pinData": {
+    "When chat message received": [
+      {
+        "json": {
+          "name": "AI Customer Support",
+          "nodes": [
+            {
+              "parameters": {
+                "triggerOn": "all",
+                "webhookPath": "incoming-message",
+                "responseMode": "onReceived"
+              },
+              "name": "Trigger Incoming Messages",
+              "type": "n8n-nodes-base.webhook",
+              "typeVersion": 1,
+              "position": [
+                250,
+                300
+              ]
+            },
+            {
+              "parameters": {
+                "authentication": "predefinedCredentialType",
+                "aiModel": "gpt-4",
+                "prompt": "You are a smart assistant for X Plus Mobile Store. Your task is to reply to client messages in the same language (Arabic or English) based on the data from Google Sheets FAQ_Data. If no exact answer exists, generate polite helpful response. Keep replies 1-3 sentences, friendly, professional. Always end with a helpful closing question. Input Message: {{$json[\"body\"]}}"
+              },
+              "name": "AI Reply",
+              "type": "n8n-nodes-base.openai",
+              "typeVersion": 1,
+              "position": [
+                600,
+                300
+              ]
+            },
+            {
+              "parameters": {
+                "operation": "read",
+                "sheetId": "<YOUR_GOOGLE_SHEET_ID>",
+                "range": "FAQ_Data"
+              },
+              "name": "Get Knowledge Base",
+              "type": "n8n-nodes-base.googleSheets",
+              "typeVersion": 1,
+              "position": [
+                400,
+                300
+              ]
+            },
+            {
+              "parameters": {
+                "resource": "message",
+                "operation": "send",
+                "channel": "same",
+                "message": "{{$node[\"AI Reply\"].json[\"text\"]}}"
+              },
+              "name": "Send Reply",
+              "type": "n8n-nodes-base.messaging",
+              "typeVersion": 1,
+              "position": [
+                850,
+                300
+              ]
+            }
+          ],
+          "connections": {
+            "Trigger Incoming Messages": {
+              "main": [
+                [
+                  {
+                    "node": "Get Knowledge Base",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Get Knowledge Base": {
+              "main": [
+                [
+                  {
+                    "node": "AI Reply",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "AI Reply": {
+              "main": [
+                [
+                  {
+                    "node": "Send Reply",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Create an assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an assistant": {
+      "main": [
+        []
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "ItEcAcuRoVkvV8xY"
+  },
+  "versionId": "d18d5002-fcbd-47b7-86b0-c44b2fc71158",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e6800de071772aa575669996c416f5a7c1a51b4a496994f19efb952d86002dcc"
+  },
+  "id": "ItEcAcuRoVkvV8xY",
+  "tags": []
+}
