@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>خدمات الصين إلى بابك</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <button id="menuToggle" class="menu-toggle">☰</button>
+      <div class="logo">خدمات الصين إلى بابك</div>
+      <div class="header-actions">
+        <button id="langToggle">EN</button>
+        <button id="themeToggle">🌓</button>
+      </div>
+    </header>
+
+    <main id="mainView" class="view home-view">
+      <div class="hero">
+        <h1 class="headline">حاجتك في الصين، نُنجزها ونوصلها إلى بابك.</h1>
+        <p class="subtext">خدمات الصين إلى بابك تربطك بالسوق الصيني الشاسع …</p>
+        <div class="hero-buttons">
+          <button class="btn primary" data-action="goBill">ابدأ الآن</button>
+          <button class="btn secondary">تعرّف أكثر</button>
+        </div>
+      </div>
+      <div class="services">
+        <div class="service-card" data-action="goBill">شراء فاتورة وشحن</div>
+        <div class="service-card" data-action="goTrack">تتبع شحنتك</div>
+      </div>
+    </main>
+
+    <!-- Bill + Shipping view -->
+    <section id="billView" class="view form-view hidden">
+      <h2>شراء فاتورة + شحن</h2>
+      <form id="billForm">
+        <div class="form-group">
+          <label>قيمة الفاتورة (USD):</label>
+          <input type="number" id="invoiceValue" required />
+        </div>
+        <div class="form-group">
+          <label>طريقة الشحن:</label>
+          <select id="shippingMethod">
+            <option value="air">شحن جوي</option>
+            <option value="sea">شحن بحري</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>الوزن (كجم):</label>
+          <input type="number" id="weight" required />
+        </div>
+        <div class="form-group">
+          <label>الحجم (م³):</label>
+          <input type="number" id="volume" required />
+        </div>
+        <button type="submit" class="btn primary">احتساب السعر</button>
+        <button type="button" class="btn secondary" data-action="goHome">رجوع</button>
+      </form>
+      <div id="billResult" class="result hidden">
+        <h3>النتيجة</h3>
+        <p>قيمة الفاتورة: <span id="resInvoice"></span> IQD</p>
+        <p>عمولة (3%): <span id="resCommission"></span> IQD</p>
+        <p>رسوم الشحن: <span id="resShippingFee"></span> IQD</p>
+        <p><strong>الإجمالي المقدر: <span id="resTotal"></span> IQD</strong></p>
+        <button class="btn primary" data-action="goHome">حسناً</button>
+      </div>
+    </section>
+
+    <!-- Track Shipment view -->
+    <section id="trackView" class="view form-view hidden">
+      <h2>تتبع شحنتك</h2>
+      <form id="trackForm">
+        <div class="form-group">
+          <label>طريقة الشحن:</label>
+          <select id="trackMethod">
+            <option value="air">شحن جوي</option>
+            <option value="sea">شحن بحري</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>تاريخ الشحن:</label>
+          <input type="date" id="shipDate" required />
+        </div>
+        <button type="submit" class="btn primary">تتبّع</button>
+        <button type="button" class="btn secondary" data-action="goHome">رجوع</button>
+      </form>
+      <div id="trackResult" class="result hidden">
+        <h3>نتيجة التتبع</h3>
+        <p>الوقت المقدر للوصول: <span id="eta"></span></p>
+        <button class="btn primary" data-action="goHome">حسناً</button>
+      </div>
+    </section>
+
+    <!-- Menu overlay -->
+    <div id="menuOverlay" class="overlay hidden">
+      <button id="menuClose" class="overlay-close">✕</button>
+      <ul class="menu-list">
+        <li data-action="goHome">الرئيسية / Home</li>
+        <li data-action="goBill">شراء فاتورة وشحن</li>
+        <li data-action="goTrack">تتبع شحنتك</li>
+        <li data-action="goContact">اتصل بنا</li>
+      </ul>
+    </div>
+
+    <!-- Chat overlay (dummy) -->
+    <div id="chatOverlay" class="overlay hidden">
+      <button id="chatClose" class="overlay-close">✕</button>
+      <div class="chat-header">Chat with Us</div>
+      <div class="chat-body">
+        <p>مرحبا! كيف أساعدك اليوم؟</p>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="اكتب رسالتك..." />
+        <button>إرسال</button>
+      </div>
+    </div>
+
+    <button id="chatToggle" class="chat-toggle">💬</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
